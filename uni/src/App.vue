@@ -2,16 +2,16 @@
   v-app
     v-content
       v-container(fluid)
-        HelloWorld
+        NuevaCarrera
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import NuevaCarrera from './components/NuevaCarrera'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NuevaCarrera
   }
 }
 </script>
