@@ -1,6 +1,6 @@
 <template lang="pug">
     v-card.pa-4.mt-5
-        h3 Ciclo 1
+        h3 Ciclo {{numeroCiclo + 1}}
         v-autocomplete(v-model='courses', :disabled='isUpdating', :items='optionCourses', chips='', color='', box='', placeholder='Agregar curso a ciclo' item-value='item', multiple='')
           template(v-slot:selection='data')
             v-chip.chip--select-multi(:selected='data.selected', color='primary', text-color='white' close='', @input='remove(data.item)')
@@ -15,6 +15,7 @@
 
 <script>
 export default {
+    props: ['numeroCiclo'],
     data () {
       return {
         autoUpdate: true,
@@ -36,6 +37,11 @@ export default {
         const index = this.courses.indexOf(item)
         if (index >= 0) this.courses.splice(index, 1)
       }
+    },
+    watch: {
+        courses() {
+            this.$emit('cicleChange', { courses: this.courses, index: this.numeroCiclo })
+        }
     }
   }
 </script>

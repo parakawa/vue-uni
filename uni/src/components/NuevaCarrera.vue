@@ -19,28 +19,87 @@
           label Facultad
           select(v-model='facultie')
             option Seleccione
-            option(v-for='facultie in faculties') {{facultie}}
+            option(v-for='(facultie, i) in faculties' :key="i") {{facultie}}
       h2.mt-3.mb-3.blue--text Cursos por carrera
-      Ciclo(v-for='i in nCiclos')
-              
+      Ciclo(v-for='(item, i) in Number(nCiclos)' :key="i", :numeroCiclo="i" :ref="getRefName(i)" @cicleChange="getCicleInfo") 
+      template
+      .text-xs-center
+        v-dialog(width='500')
+          template(v-slot:activator='{ on }')
+            v-btn(color='red lighten-2', dark='', v-on='on')
+              | Click Me
+          v-card
+            v-card-title.headline.grey.lighten-2(primary-title='')
+              | Datos
+            v-card-text
+              p Nombre: {{name}}
+              p Código: {{code}}
+              p Facultad: {{facultie}}
+              p Cursos: 
+              ul
+                li(v-for='(ciclo,i) in this.$refs')                    
+                  
 </template>
 
 <script>
 import Ciclo from './Ciclo'
 
 export default {
-  components: {
-    Ciclo
-  },
-  data () {
-    return {
-      nCiclos: 0,
-      name: '',
-      code: '',
-      facultie: '',
-      faculties: ['Matemática', 'Educación'],
+    components: {
+        Ciclo
+    },
+    data () {
+        return {
+            nCiclos: 3,
+            courses: [],
+            name: '',
+            code: '',
+            facultie: '',
+            faculties: ['Matemática', 'Educación'],
+            list: [
+                { id: 1, name: 'item 1'}
+            ],
+            // referencias: {
+            //     name: 'Maritza',
+            //     id: '123'
+            // }
+        }
+    },
+    methods: {
+        getRefName(i) {
+            return `cicle-${i}`
+        },
+        getCicleInfo(val) {
+            this.courses[val.index] = val.courses;
+        }
+    },
+    computed: {
+        newList() {
+            let result = this.list.map(item => ({ label: item.name, value: item.id }))
+            return result
+        },
+        referencias() {
+            // let references = []
+            // Object.keys(this.refs).forEach(item => {
+            //     references.push(this.refs[item])
+            // }) 
+            // if(this.refs) return Object.keys(this.refs)
+        },
+        refsCiclos() {
+            return 
+            
+            // [ 'name', 'id' ]
+            // Object.keys(this.referencias).forEach(item => {
+            //     this.referencias[item]
+            // }) 
+
+        },
+    },
+    watch: {
+        nCiclos() {
+            
+        }
     }
-  },
   }
 </script>
 
