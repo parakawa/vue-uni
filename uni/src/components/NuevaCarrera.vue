@@ -46,6 +46,16 @@
 <script>
 import Ciclo from './Ciclo'
 import { required, minLength, email } from 'vuelidate/lib/validators'
+import Vuex from 'vuex'
+
+const store = new Vuex.Store({
+    state: {
+        faculties: ['Matemática', 'Educación'],
+    },
+    mutations: {
+
+    }
+  })
 
 export default {
     components: {
@@ -58,7 +68,6 @@ export default {
             name: '',
             code: '',
             facultie: '',
-            faculties: ['Matemática', 'Educación'],
             list: [
                 { id: 1, name: 'item 1'}
             ],
@@ -85,28 +94,16 @@ export default {
 	    facultie: {
           required,
 		  },
-		},		  		  	  
+        },	
+        	  		  	  
     computed: {
+        faculties() {
+            return store.state.faculties;
+        },
         newList() {
             let result = this.list.map(item => ({ label: item.name, value: item.id }))
             return result
         },
-        referencias() {
-            // let references = []
-            // Object.keys(this.refs).forEach(item => {
-            //     references.push(this.refs[item])
-            // }) 
-            // if(this.refs) return Object.keys(this.refs)
-        },
-        refsCiclos() {
-            return 
-            
-            // [ 'name', 'id' ]
-            // Object.keys(this.referencias).forEach(item => {
-            //     this.referencias[item]
-            // }) 
-
-		},
 		isComplete () {
             return !(this.$v.name.required && this.$v.code.required && this.$v.facultie.required);
         },

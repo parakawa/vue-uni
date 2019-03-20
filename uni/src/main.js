@@ -4,11 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import Vuetify from 'vuetify'
 import Vuelidate from 'vuelidate'
+import Vuex from 'vuex'
 
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
+Vue.use(Vuex)
 
 Vue.config.productionTip = false
 
