@@ -44,10 +44,12 @@
 </template>
 
 <script>
+import Vue from 'Vue'
 import Ciclo from './Ciclo'
 import { required, minLength, email } from 'vuelidate/lib/validators'
 import Vuex from 'vuex'
 
+Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         faculties: ['Matemática', 'Educación'],
