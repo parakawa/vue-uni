@@ -4,9 +4,7 @@
             h1 Nueva Carrera
             v-layout.mt-5
                 v-flex.xs-6
-                    label Nombre
-                    input.input-career(placeholder="Nombre", v-model='name' v-model.trim="$v.name.$model")
-                    .err(v-if="!$v.name.required") Field is required
+                    v-text-field(v-model='name', :rules='verifyCarrera', label='Nombre', required='')
                 v-flex.xs-6
                     label Nº Ciclos
                     select(v-model='nCiclos')
@@ -14,15 +12,14 @@
                         option(v-for='i in 10') {{i}}        
             v-layout.mt-3
                 v-flex.xs-6
-                    label Código
-                    input.input-career(v-model='code' v-model.trim="$v.code.$model")
-                    .err(v-if="!$v.code.required") Field is required
+                    v-text-field(v-model='code', :rules='verifyCode', label='Código', required='')
                 v-flex.xs-6
-                    label Facultad
-                    select(v-model='facultie' v-model.trim="$v.code.$model")
-                        option Seleccione
-                        option(v-for='(facultie, i) in faculties' :key="i") {{facultie}}
-                    .err(v-if="!$v.facultie.required") Field is required
+                    v-select(v-model='facultie', :items='faculties', label='Select', :rules='verifyFacultie', required='')
+                    //- label Facultad
+                    //- select(v-model='facultie' v-model.trim="$v.code.$model")
+                    //-     option Seleccione
+                    //-     option(v-for='(facultie, i) in faculties' :key="i") {{facultie}}
+                    //- .err(v-if="!$v.facultie.required") Field is required
             h2.mt-3.mb-3.blue--text Cursos por carrera
             Ciclo(v-for='(item, i) in Number(nCiclos)' :key="i", :numeroCiclo="i" :ref="getRefName(i)" @cicleChange="getCicleInfo") 
 
@@ -48,7 +45,7 @@
 
 <script>
 import Ciclo from './Ciclo'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, minLength, email } from 'vuelidate/lib/validators'
 
 export default {
     components: {
@@ -64,12 +61,8 @@ export default {
             faculties: ['Matemática', 'Educación'],
             list: [
                 { id: 1, name: 'item 1'}
-			],
-			dialog: false
-            // referencias: {
-            //     name: 'Maritza',
-            //     id: '123'
-            // }
+            ],
+			dialog: false,
         }
     },
     methods: {
@@ -83,7 +76,8 @@ export default {
     validations: {
         name: {
 		  required,
-		  minLength: minLength(4)
+          minLength: minLength(4),
+          email,
 		  },
 	    code: {
           required,
@@ -116,8 +110,16 @@ export default {
 		isComplete () {
             return !(this.$v.name.required && this.$v.code.required && this.$v.facultie.required);
         },
-        validate () {
-
+        verifyCarrera () {
+            if(!this.$v.name.required) return ['El nombre es requerido'];
+            else if(!this.$v.name.minLength) return ['Debe escribir al menos 4 caracteres'];
+            else if(!this.$v.name.email) return ['El campo debe ser email'];
+        },
+        verifyCode () {
+            return [this.$v.code.required || 'El código es requerido'];
+        },
+        verifyFacultie () {
+            return [this.$v.code.required || 'La facultad es requerida'];
         }
     },
     watch: {
