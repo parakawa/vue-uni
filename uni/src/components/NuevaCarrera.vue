@@ -44,20 +44,8 @@
 </template>
 
 <script>
-import Vue from 'Vue'
 import Ciclo from './Ciclo'
 import { required, minLength, email } from 'vuelidate/lib/validators'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-const store = new Vuex.Store({
-    state: {
-        faculties: ['Matemática', 'Educación'],
-    },
-    mutations: {
-
-    }
-  })
 
 export default {
     components: {
@@ -100,7 +88,7 @@ export default {
         	  		  	  
     computed: {
         faculties() {
-            return store.state.faculties;
+            return this.$store.state.faculties;
         },
         newList() {
             let result = this.list.map(item => ({ label: item.name, value: item.id }))

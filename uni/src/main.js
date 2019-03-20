@@ -5,18 +5,24 @@ import App from './App'
 import Vuetify from 'vuetify'
 import Vuelidate from 'vuelidate'
 import Vuex from 'vuex'
-
+import { state, mutations } from './store'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify)
 Vue.use(Vuelidate)
 Vue.use(Vuex)
 
+const store = new Vuex.Store({
+  state,
+  mutations
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  components: { App },
-  template: '<App/>'
+    el: '#app',
+    components: { App },
+    template: '<App/>',
+    store
 })

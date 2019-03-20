@@ -11,7 +11,7 @@ import NuevaCarrera from './components/NuevaCarrera'
 export default {
   name: 'App',
   components: {
-    NuevaCarrera
+    NuevaCarrera 
   }
 }
 </script>
