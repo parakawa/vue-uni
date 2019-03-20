@@ -1,47 +1,46 @@
 <template lang="pug">
-  v-container.justify-center.form-career(fluid)
-    v-form.mt-5(@submit.prevent='submit')
-      h1 Nueva Carrera
-      v-layout.mt-5
-        v-flex.xs-6
-          label Nombre
-          input.input-career(placeholder="Nombre", v-model='name')
-        v-flex.xs-6
-          label Nº Ciclos
-          select(v-model='nCiclos')
-            option Seleccione
-            option(v-for='i in 10') {{i}}        
-      v-layout.mt-3
-        v-flex.xs-6
-          label Código
-          input.input-career(v-model='code')
-        v-flex.xs-6
-          label Facultad
-          select(v-model='facultie')
-            option Seleccione
-            option(v-for='(facultie, i) in faculties' :key="i") {{facultie}}
-      h2.mt-3.mb-3.blue--text Cursos por carrera
-      Ciclo(v-for='(item, i) in Number(nCiclos)' :key="i", :numeroCiclo="i" :ref="getRefName(i)" @cicleChange="getCicleInfo") 
-      template
-      .text-xs-center
-        v-dialog(width='500')
-          template(v-slot:activator='{ on }')
-            v-btn(color='red lighten-2', dark='', v-on='on' :disabled='!isComplete')
-              | Click Me
-          v-card
-            v-card-title.headline.grey.lighten-2(primary-title='')
-              | Datos
-            v-card-text
-              p Nombre: {{name}}
-              p Código: {{code}}
-              p Facultad: {{facultie}}
-              p Cursos: 
-              ul
-                div(v-for='(course,i) in courses')
-                  h4 Ciclo {{i+1}}  
-                    ol 
-                      li(v-for='(item,k) in course[i]') {{item.name}}               
-                  
+    v-container.justify-center.form-career(fluid)
+        v-form.mt-5(@submit.prevent='submit')
+            h1 Nueva Carrera
+            v-layout.mt-5
+                v-flex.xs-6
+                    label Nombre
+                    input.input-career(placeholder="Nombre", v-model='name')
+                v-flex.xs-6
+                    label Nº Ciclos
+                    select(v-model='nCiclos')
+                        option Seleccione
+                        option(v-for='i in 10') {{i}}        
+            v-layout.mt-3
+                v-flex.xs-6
+                    label Código
+                    input.input-career(v-model='code')
+                v-flex.xs-6
+                    label Facultad
+                    select(v-model='facultie')
+                        option Seleccione
+                        option(v-for='(facultie, i) in faculties' :key="i") {{facultie}}
+            h2.mt-3.mb-3.blue--text Cursos por carrera
+            Ciclo(v-for='(item, i) in Number(nCiclos)' :key="i", :numeroCiclo="i" :ref="getRefName(i)" @cicleChange="getCicleInfo" :disabled="isComplete") 
+
+        v-dialog(width='500' v-model="dialog")
+            template(v-slot:activator='{ on }')
+                v-btn(color='red lighten-2', dark='', v-on='on' )
+                | Click Me
+            v-card
+                v-card-title.headline.grey.lighten-2(primary-title='') 
+                | Datos
+                v-card-text
+                    p Nombre: {{name}}
+                    p Código: {{code}}
+                    p Facultad: {{facultie}}
+                    p Cursos: 
+                    ul
+                        li(v-for='(course,i) in courses' :key="i")
+                            h4 Ciclo {{i+1}}  
+                            ol 
+                                li(v-for='(item,k) in course' :key="k") {{item.name}}
+
 </template>
 
 <script>
@@ -62,7 +61,8 @@ export default {
             faculties: ['Matemática', 'Educación'],
             list: [
                 { id: 1, name: 'item 1'}
-            ],
+			],
+			dialog: false
             // referencias: {
             //     name: 'Maritza',
             //     id: '123'
