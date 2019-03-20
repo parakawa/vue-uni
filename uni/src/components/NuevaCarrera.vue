@@ -5,7 +5,8 @@
             v-layout.mt-5
                 v-flex.xs-6
                     label Nombre
-                    input.input-career(placeholder="Nombre", v-model='name')
+                    input.input-career(placeholder="Nombre", v-model='name' v-model.trim="$v.name.$model")
+                    .err(v-if="!$v.name.required") Field is required
                 v-flex.xs-6
                     label Nº Ciclos
                     select(v-model='nCiclos')
@@ -14,18 +15,20 @@
             v-layout.mt-3
                 v-flex.xs-6
                     label Código
-                    input.input-career(v-model='code')
+                    input.input-career(v-model='code' v-model.trim="$v.code.$model")
+                    .err(v-if="!$v.code.required") Field is required
                 v-flex.xs-6
                     label Facultad
-                    select(v-model='facultie')
+                    select(v-model='facultie' v-model.trim="$v.code.$model")
                         option Seleccione
                         option(v-for='(facultie, i) in faculties' :key="i") {{facultie}}
+                    .err(v-if="!$v.facultie.required") Field is required
             h2.mt-3.mb-3.blue--text Cursos por carrera
-            Ciclo(v-for='(item, i) in Number(nCiclos)' :key="i", :numeroCiclo="i" :ref="getRefName(i)" @cicleChange="getCicleInfo" :disabled="isComplete") 
+            Ciclo(v-for='(item, i) in Number(nCiclos)' :key="i", :numeroCiclo="i" :ref="getRefName(i)" @cicleChange="getCicleInfo") 
 
         v-dialog(width='500' v-model="dialog")
             template(v-slot:activator='{ on }')
-                v-btn(color='red lighten-2', dark='', v-on='on' )
+                v-btn(color='red lighten-2', dark='', v-on='on', :disabled='!($v.name.required && $v.code.required && $v.facultie.required)')
                 | Click Me
             v-card
                 v-card-title.headline.grey.lighten-2(primary-title='') 
@@ -39,7 +42,7 @@
                         li(v-for='(course,i) in courses' :key="i")
                             h4 Ciclo {{i+1}}  
                             ol 
-                                li(v-for='(item,k) in course' :key="k") {{item.name}}
+                                li(v-for='(item,k) in coursegit ' :key="k") {{item.name}}
 
 </template>
 
@@ -111,8 +114,13 @@ export default {
 
 		},
 		isComplete () {
-			return this.name && this.code && this.facultie;
-		}
+            debugger;
+            console.log($v.name.required && $v.code.required && $v.facultie.required)
+            return $v.name.required && $v.code.required && $v.facultie.required;
+        },
+        validate () {
+
+        }
     },
     watch: {
         nCiclos() {
