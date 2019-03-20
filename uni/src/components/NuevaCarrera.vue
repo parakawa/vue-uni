@@ -1,6 +1,6 @@
 <template lang="pug">
   v-container.justify-center.form-career(fluid)
-    v-form.mt-5
+    v-form.mt-5(@submit.prevent='submit')
       h1 Nueva Carrera
       v-layout.mt-5
         v-flex.xs-6
@@ -26,7 +26,7 @@
       .text-xs-center
         v-dialog(width='500')
           template(v-slot:activator='{ on }')
-            v-btn(color='red lighten-2', dark='', v-on='on')
+            v-btn(color='red lighten-2', dark='', v-on='on' :disabled='!isComplete')
               | Click Me
           v-card
             v-card-title.headline.grey.lighten-2(primary-title='')
@@ -37,12 +37,16 @@
               p Facultad: {{facultie}}
               p Cursos: 
               ul
-                li(v-for='(ciclo,i) in this.$refs')                    
+                div(v-for='(course,i) in courses')
+                  h4 Ciclo {{i+1}}  
+                    ol 
+                      li(v-for='(item,k) in course[i]') {{item.name}}               
                   
 </template>
 
 <script>
 import Ciclo from './Ciclo'
+import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
     components: {
@@ -73,6 +77,18 @@ export default {
             this.courses[val.index] = val.courses;
         }
     },
+    validations: {
+        name: {
+		  required,
+		  minLength: minLength(4)
+		  },
+	    code: {
+          required,
+		  },
+	    facultie: {
+          required,
+		  },
+		},		  		  	  
     computed: {
         newList() {
             let result = this.list.map(item => ({ label: item.name, value: item.id }))
@@ -93,7 +109,10 @@ export default {
             //     this.referencias[item]
             // }) 
 
-        },
+		},
+		isComplete () {
+			return this.name && this.code && this.facultie;
+		}
     },
     watch: {
         nCiclos() {
