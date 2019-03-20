@@ -28,7 +28,7 @@
 
         v-dialog(width='500' v-model="dialog")
             template(v-slot:activator='{ on }')
-                v-btn(color='red lighten-2', dark='', v-on='on', :disabled='!($v.name.required && $v.code.required && $v.facultie.required)')
+                v-btn(color='red lighten-2', dark='', v-on='on', :disabled='isComplete')
                 | Click Me
             v-card
                 v-card-title.headline.grey.lighten-2(primary-title='') 
@@ -42,7 +42,7 @@
                         li(v-for='(course,i) in courses' :key="i")
                             h4 Ciclo {{i+1}}  
                             ol 
-                                li(v-for='(item,k) in coursegit ' :key="k") {{item.name}}
+                                li(v-for='(item,k) in course ' :key="k") {{item.name}}
 
 </template>
 
@@ -114,9 +114,7 @@ export default {
 
 		},
 		isComplete () {
-            debugger;
-            console.log($v.name.required && $v.code.required && $v.facultie.required)
-            return $v.name.required && $v.code.required && $v.facultie.required;
+            return !(this.$v.name.required && this.$v.code.required && this.$v.facultie.required);
         },
         validate () {
 
